@@ -2,6 +2,7 @@ package com.dglg.spring.controller;
 
 
 import com.dglg.spring.dao.DepartmentDao;
+import com.dglg.spring.dao.ExcelDao;
 import com.dglg.spring.model.User;
 import com.dglg.spring.service.EmployeeService;
 import com.dglg.spring.service.UserService;
@@ -26,10 +27,17 @@ public class UserController {
     @Autowired
     private DepartmentDao departmentDao;
 
+    @Autowired
+    private ExcelDao excelDao;
+
+
     @PostMapping("/insert")
     public int insert(User user) {
         return this.userService.insert(user);
     }
+
+
+
 
     @PostMapping("/update")
     public int update(User user) {
