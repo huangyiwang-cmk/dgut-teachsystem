@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.dglg.spring.dao.UserDao">
+
+    <insert id="insert" parameterType="User">
+<!--        insert into training_student(student_id, training_class_name) values (#{student_id}, #{training_class_name})-->
+        insert into student(student_id, student_name) values (#{student_id}, #{student_name})
+    </insert>
+
+    <update id="update">
+        update student set  student_name = #{student_name} where  student_id= #{student_id}
+    </update>
+
+    <delete id="delete">
+        delete from student where student_id = #{student_id}
+    </delete>
+
+    <select id="getUser" parameterType="String" resultType="User">
+        select student_id, student_name,gender,grade,class as banji,major from student where student_id = #{student_id}
+    </select>
+    
+<!--    <resultMap id="userMap" type="User">-->
+<!--        <id property="id" column="id"/>-->
+<!--        <result property="username" column="username"/>-->
+<!--        <result property="password" column="password"/>-->
+<!--        <result property="phone" column="u_phone"/>-->
+<!--    </resultMap>-->
+
+  <!--
+        <select id="getUser" parameterType="int" resultType="User">
+            select id, username, password, u_phone from user where id = #{id}
+        </select>
+   -->
+<!--    <select id="getUser" parameterType="int" resultMap="userMap">-->
+<!--        SELECT * from student-->
+<!--    </select>-->
+
+<!--    <select id="getData" parameterType="int" resultType="Map">-->
+<!--        select id, username, password, u_phone from user where id = #{id}-->
+<!--    </select>-->
+
+</mapper>

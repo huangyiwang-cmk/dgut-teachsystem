@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.dglg.spring.dao.ExcelDao">
+
+    <insert id="addStudent" parameterType="com.dglg.spring.model.Student">
+        insert into student(student_id,student_name,gender,grade,class,major) values
+        <foreach collection="list" item="student" separator=",">
+            (#{student.student_id},#{student.student_name},#{student.gender},#{student.grade},#{student.banji},#{student.major} )
+        </foreach>
+    </insert>
+</mapper>

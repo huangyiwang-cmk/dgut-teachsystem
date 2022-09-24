@@ -1,0 +1,87 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.dglg.spring.dao.EmployeeDao">
+
+
+    <sql id="zz">
+        empno, ename, password, ob, mgr, hiredate, sal, comm, deptno
+    </sql>
+
+    <select id="getEmployee" parameterType="java.lang.Integer" resultType="Employee">
+        select <include refid="zz"/> from employee where empno = #{empno}
+    </select>
+
+    <select id="getEmployeeByEname" parameterType="java.lang.Integer" resultType="Employee">
+        select <include refid="zz"/> from employee where ename = #{ename}
+    </select>
+
+    <!--
+        # : 预编译，针对String类型的参数，如：String name="zz"  >> where name = #{name} >>  where name = 'zz'
+                                        int sex = 1 >> where sex = #{sex} >> where sex = 1
+
+        $ : 直接拼接，如：String name="zz"  >> where name = ${name} >>  where name = zz
+    -->
+    <select id="getEmployeeBySQL" parameterType="java.lang.Integer" resultType="Employee">
+        ${sql}
+    </select>
+
+    <select id="getEmployees" resultType="Employee">
+        select <include refid="zz"/> from employee
+    </select>
+
+    <select id="getEmployeesByParams" resultType="Employee">
+        select <include refid="zz"/> from employee where ename = #{ename} or job = #{job}
+    </select>
+
+    <select id="getEmployeesByFilter" resultType="Employee">
+        select <include refid="zz"/> from employee
+            <where>
+                <if test="ename != '' and ename != null">
+                    ename = #{ename}
+                </if>
+                <if test="job != '' and job != null">
+                    or job = #{job}
+                </if>
+            </where>
+    </select>
+
+    <select id="getEmployeesByIds" resultType="Employee">
+        select <include refid="zz"/> from employee where empno in <!-- (7369, 7499, 7521, 7566, 7654) -->
+        <foreach collection="ids" item="id" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </select>
+
+    <insert id="batchInsert">
+        <!-- insert into employee values ....... -->
+    </insert>
+
+    <select id="getData" resultType="Map">
+        select empno, ename, job, sal from employee limit 0, 3
+    </select>
+
+
+
+    <resultMap id="employeeMap" type="Employee">
+        <id property="empno" column="empno"/>
+        <result property="ename" column="ename" />
+        <result column="job" property="job"/>
+        <result column="mgr" property="mgr"/>
+        <result column="hiredate" property="hiredate"/>
+        <result column="sal" property="sal"/>
+        <result column="comm" property="comm"/>
+        <association property="department" javaType="Department">
+            <id property="deptno" column="deptno"/>
+            <result property="dname" column="dname" />
+            <result column="loc" property="location"/>
+        </association>
+    </resultMap>
+
+    <select id="getAll" resultMap="employeeMap">
+        select
+            e.empno, e.ename, e.job, e.mgr, e.hiredate, e.sal, e.comm, d.deptno, d.dname, d.loc
+        from employee e left join department d on e.deptno = d.deptno
+    </select>
+
+
+</mapper>
